@@ -1,7 +1,7 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 
-interface testState {
+export interface TestState {
   count: number;
   title: string;
 
@@ -15,9 +15,9 @@ interface testState {
 }
 
 //* (set): funcion callback que me servira para actualizar el estado mas adelante
-export const counterStore = create<testState>()(
-  //TODO: Middleware persist guarda tus datos en local-storage tan solo con elvolver la funcion set
-  // TODO: Es como tener una base de datos. Solo usarla en datos que realmente nevcesiten ser guadados
+export const counterStore = create<TestState>()(
+  // Middleware persist guarda tus datos en local-storage tan solo con elvolver la funcion set
+  // Es como tener una base de datos. Solo usarla en datos que realmente nevcesiten ser guadados
   persist(
     (set) => ({
       count: 0,
@@ -30,13 +30,17 @@ export const counterStore = create<testState>()(
         // se devulve directo sin callback si el valor anterior no importa
         reset: () => set({ count: 0 }),
     
-        updateTitle(newTitle) {
-          set(() => ({ title: newTitle }));
-        },
+        updateTitle: (newTitle: string) => set({ title: newTitle }),
       },
-    }), {name: "counter-storage"}
+    }), 
+    {
+      name: "counter-storage",
+      version: 1, // 👈 Si cambias la estructura, sube esto a 2 y Zustand limpiará el viejo automáticamente
+      // 🔥 PARCHE: Solo guardamos los datos, NO las acciones (que son funciones)
+      partialize: (state) => ({ count: state.count, title: state.title }),
+    }
   )
 );
 
-//TODO: Para evitar re-render se crea un hook que se encargue de extraer solo las actions
+// Para evitar re-render se crea un hook que se encargue de extraer solo las actions
 export const useCounterActions = () => counterStore((state) => state.actions);

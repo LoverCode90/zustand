@@ -3,7 +3,7 @@ import React, { useEffect } from "react";
 import Button from "./ui/Button";
 
 export default function Counter() {
-  const title = counterStore((state) => state.title)
+  const title = counterStore((state) => state.title);
   const count = counterStore((state) => state.count); // la forma mas eficiente pero verbosa de extraer el estado del store
   const { increment, decrement, reset, updateTitle } = useCounterActions(); // Aqui se extraen de un hook personalizado
 
@@ -31,18 +31,20 @@ export default function Counter() {
       <h2 className="text-xl font-semibold text-center">{title}</h2>
       <p className="text-center text-gray-300 mt-3">Counter: {count}</p>
 
+      {/* action buttons */}
       <div className="flex items-center gap-6 mt-6">
         <Button label="Decrement" onClick={decrement} />
         <Button label="Increment" onClick={increment} />
         <Button label="Reset" onClick={reset} bgColor="bg-rose-600" />
       </div>
 
+      {/* input to update title */}
       <input
         type="text"
-        className="p-2 rounded text-white mx-auto mt-3"
+        className="p-2 rounded text-white mx-auto mt-5 w-full"
         placeholder="Type a title..."
         onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-          updateTitle(e.currentTarget.value)
+          updateTitle(e.target.value);
         }}
       />
     </div>
