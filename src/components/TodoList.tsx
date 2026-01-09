@@ -1,15 +1,12 @@
 import { useEffect } from "react";
-import { todoStore, useTodoStore } from "../stores/todoStore";
+import { useTodoStore } from "../stores/todo/useTodoStore";
 
 export default function TodoList() {
-  const tasks = todoStore((state) => state.todos);
-  const isLoading = todoStore((state) => state.isLoading);
-  const error = todoStore((state) => state.error);
-  const { fetchTodos } = useTodoStore();
+  const { todos, isLoading, error, fetchTodos, toggleTodo } = useTodoStore();
 
   useEffect(() => {
     fetchTodos();
-  }, [tasks]);
+  }, []);
 
   if (isLoading) {
     return (
@@ -28,11 +25,15 @@ export default function TodoList() {
   }
   return (
     <ul className="mx-auto flex flex-col gap-4 max-w-sm">
-      {tasks.map((task) => (
-        <li key={task.id} className="px-5 py-2 rounded w-full bg-neutral-800">
+      {todos.map((task) => (
+        <li
+          key={task.id}
+          className="px-5 py-2 rounded w-full bg-neutral-800 flex items-center justify-between gap-5"
+          onClick={() => toggleTodo(task.id)}
+        >
           <span className="text-white">{task.text}</span>
           <span
-            className={`px-4 py-1.5 rounded ${
+            className={`px-4 py-1 rounded ${
               task.completed
                 ? "bg-green-600 text-white"
                 : "bg-gray-300 text-neutral-900"

@@ -22,17 +22,17 @@ export const counterStore = create<TestState>()(
     (set) => ({
       count: 0,
       title: "Counter Example",
-    
+
       // se usa set como callback si el nuevo valor depende el anterior
       actions: {
         increment: () => set((state) => ({ count: state.count + 1 })),
         decrement: () => set((state) => ({ count: state.count - 1 })),
         // se devulve directo sin callback si el valor anterior no importa
         reset: () => set({ count: 0 }),
-    
+
         updateTitle: (newTitle: string) => set({ title: newTitle }),
       },
-    }), 
+    }),
     {
       name: "counter-storage",
       version: 1, // 👈 Si cambias la estructura, sube esto a 2 y Zustand limpiará el viejo automáticamente

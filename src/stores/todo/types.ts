@@ -10,7 +10,6 @@ export interface TodoState {
   error: string | null;
   actions: {
     fetchTodos: () => Promise<void>;
-    addTodo: (text: string) => Promise<void>;
     toggleTodo: (id: string) => void;
   };
 }
